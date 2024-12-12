@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"vite\" \"cd python && gunicorn -w 4 -b 0.0.0.0:5174 --access-logfile - --timeout 3600 app:app\"",
+    "dev": "concurrently \"vite\" \"cross-env PLATFORM=Windows npm run start-server\"",
+    "start-server": "if \"%PLATFORM%\"==\"Windows\" (cd python && waitress-serve --host=0.0.0.0 --port=5174 app:app) else (cd python && gunicorn -w 4 -b 0.0.0.0:5174 --access-logfile - --timeout 3600 app:app)",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "build-only": "vite build",
@@ -49,6 +50,7 @@
     "@vue/tsconfig": "^0.5.1",
     "autoprefixer": "^10.4.19",
     "concurrently": "^8.2.2",
+    "cross-env": "^7.0.3",
     "naive-ui": "^2.38.2",
     "npm-run-all2": "^6.2.0",
     "postcss": "^8.4.39",
